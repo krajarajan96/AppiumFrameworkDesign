@@ -1,6 +1,5 @@
-package com.raja
+package com.raja.pageObjects.android
 
-import com.raja.pageObjects.android.FormPage
 import org.testng.annotations.Test
 
 class ECommerceAppTest: BaseTest() {

@@ -1,0 +1,73 @@
+package com.raja.pageObjects.ios
+
+import com.google.common.collect.ImmutableMap
+import io.appium.java_client.AppiumBy
+import io.appium.java_client.android.AndroidDriver
+import io.appium.java_client.android.options.UiAutomator2Options
+import io.appium.java_client.ios.IOSDriver
+import io.appium.java_client.ios.options.XCUITestOptions
+import io.appium.java_client.service.local.AppiumDriverLocalService
+import io.appium.java_client.service.local.AppiumServiceBuilder
+import org.openqa.selenium.JavascriptExecutor
+import org.openqa.selenium.WebElement
+import org.openqa.selenium.remote.RemoteWebElement
+import org.testng.annotations.AfterClass
+import org.testng.annotations.BeforeClass
+import java.io.File
+import java.net.URI
+import java.time.Duration
+import kotlin.collections.set
+
+open class BaseTest
+{
+    lateinit var service: AppiumDriverLocalService
+    lateinit var driver: IOSDriver
+
+    @BeforeClass
+    fun configure() {
+        // Programmatically start Appium server
+        service = AppiumServiceBuilder()
+            .withAppiumJS(File("/usr/local/lib/node_modules/appium/build/lib/main.js"))
+            .withIPAddress("127.0.0.1")
+            .usingPort(4723)
+            .build()
+        service.start()
+
+        val options = XCUITestOptions()
+        options.setDeviceName("iPhone 17")
+//        options.setApp("/Users/rajark/LeisureWork/AppiumTestRunner/src/test/resources/UIKitCatalog.app")
+//        options.setApp("/Users/rajark/LeisureWork/AppiumTestRunner/src/test/resources/TestApp 3.app")
+        options.setPlatformVersion("26.1")
+        // Appium -> Install webdriver agent -> Interacts with iOS Apps
+        options.setWdaLaunchTimeout(Duration.ofSeconds(30))
+        // For automating webviews inside android app
+        // options.setChromedriverExecutableDir("")
+
+        // For physical iOS device automation
+        options.setCapability("xcodeOrgId", "") // Team ID found in developer acc: developer.apple.com/account
+        options.setCapability("xcodeSigningId", "iPhone Developer")
+        options.setCapability("udid", "") // Click on Serial number, Get from the iPhone through some steps
+        options.setCapability("updateWDABundleId", "") // Generate in Xcode, copy & paste same bundle ID here
+        // On physical device, open settings & trust the device
+        // Enable UI Automation on device
+        options.setApp("") // Set "*.app" path
+
+
+
+        val url = URI("http://127.0.0.1:4723").toURL()
+        driver = IOSDriver(url, options)
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10))
+
+        // Locators
+        // xpath, id, accessiblity id, classname, iosClassChain, iosPredicateString
+        // iosClassChain, iosPredicateString are faster
+        // XPath -> XML -> App source: For ios, this conversion happens, so kinda slower
+
+    }
+
+    @AfterClass
+    fun tearDown() {
+        driver.quit()
+        service.stop()
+    }
+}

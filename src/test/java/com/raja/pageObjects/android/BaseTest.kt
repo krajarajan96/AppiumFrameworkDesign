@@ -1,4 +1,4 @@
-package com.raja
+package com.raja.pageObjects.android
 
 import com.google.common.collect.ImmutableMap
 import io.appium.java_client.AppiumBy
@@ -33,7 +33,7 @@ open class BaseTest
         val options = UiAutomator2Options()
         options.setDeviceName("Pixel 6 Pro")
 //        options.setDeviceName("Android device") //Real device
-        options.setApp("/Users/rajark/LeisureWork/MyAppium/src/test/resources/General-Store.apk")
+        options.setApp("/Users/rajark/LeisureWork/AppiumFrameworkDesign/src/test/resources/General-Store.apk")
         // For automating webviews inside android app
         // options.setChromedriverExecutableDir("")
 
