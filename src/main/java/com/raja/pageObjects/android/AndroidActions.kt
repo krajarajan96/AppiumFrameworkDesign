@@ -1,13 +1,14 @@
 package com.raja.pageObjects.android
 
 import com.google.common.collect.ImmutableMap
+import com.raja.pageObjects.AppiumUtils
 import io.appium.java_client.AppiumBy
 import io.appium.java_client.android.AndroidDriver
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.remote.RemoteWebElement
 
-open class AndroidActions constructor(private val driver: AndroidDriver) {
+open class AndroidActions constructor(private val driver: AndroidDriver): AppiumUtils(driver) {
 
     fun longPressGesture(element: WebElement) {
         (driver as JavascriptExecutor).executeScript(
@@ -101,9 +102,4 @@ open class AndroidActions constructor(private val driver: AndroidDriver) {
             )
         )
     }
-
-    fun getFormattedAmount(price: String): Double {
-        return price.substring(1).toDouble()
-    }
-
 }
